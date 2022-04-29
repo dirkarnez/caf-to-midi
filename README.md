@@ -3,7 +3,7 @@ caf-to-midi
 A tool to extract `midi` data from `caf` file. An attempt inspired by [Caf Midi Extractor - Utility Program - Logic Pro Help](https://www.logicprohelp.com/forum/viewtopic.php?t=139415)
 
 ### TODOs
-- [ ] emscripten build
+- [ ] emscripten build for web use
 
 ### Reference
 - [pascoej/caf: Apple Core Audio Format Container Encoder/Decoder for Go](https://github.com/pascoej/caf)

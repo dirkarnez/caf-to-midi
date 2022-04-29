@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/pascoej/caf"
 )
@@ -16,14 +18,23 @@ func stringToChunkType(str string) (result caf.FourByteString) {
 	return
 }
 
+func GetFileName(path string) string {
+	noExtension := strings.TrimSuffix(path, filepath.Ext(path))
+	return noExtension[strings.LastIndex(noExtension, "\\")+1:]
+}
+
 func main() {
-	contents, err := ioutil.ReadFile("./Delicate Piano 18.caf")
+	args := os.Args[1:2]
+	if len(args) != 1 {
+		log.Fatal("Please drag a file")
+	}
+
+	filePath := args[0]
+	contents, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if len(contents) == 0 {
-		log.Fatal("testing with empty file")
-	}
+
 	reader := bytes.NewReader(contents)
 	f := &caf.File{}
 	if err := f.Decode(reader); err != nil {
@@ -37,7 +48,7 @@ func main() {
 				log.Fatal("Not bytes")
 			}
 
-			file, err := os.Create("output.midi")
+			file, err := os.Create(GetFileName(filePath) + ".mid")
 			if err != nil {
 				log.Fatal(err)
 			}
