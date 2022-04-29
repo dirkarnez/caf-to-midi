@@ -2,6 +2,9 @@ caf-to-midi
 ===========
 A tool to extract `midi` data from `caf` file. An attempt inspired by [Caf Midi Extractor - Utility Program - Logic Pro Help](https://www.logicprohelp.com/forum/viewtopic.php?t=139415)
 
+### How to use
+Just drag a `.caf` file to this `caf-to-midi.exe`
+
 ### TODOs
 - [ ] emscripten build for web use
 
