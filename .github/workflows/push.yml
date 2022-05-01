@@ -9,7 +9,9 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      targetZip: ${{ github.event.repository.name }}-${{ github.ref_name }}.zip
+      targetWin64Zip: ${{ github.event.repository.name }}-${{ github.ref_name }}-win64.zip
+      targetWebAssemblyZip: ${{ github.event.repository.name }}-${{ github.ref_name }}-wasm.zip
+      
     steps:
       - uses: actions/checkout@v2
       
@@ -21,17 +23,35 @@ jobs:
       - run: go get .
       
       - run: go build
+        env:
+          GOOS: windows
+          GOARCH: amd64
+
+      - run: go build -o build-webassembly\main.wasm  .\webassembly\main_js.go
+        env:
+          GOOS: js
+          GOARCH: wasm
       
-      - name: Archive Release
+      - run: copy "%GOROOT%\misc\wasm\wasm_exec.js" build-webassembly\
+        shell: cmd
+    
+      - name: Archive Release (win64)
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
           path: ${{ github.event.repository.name }}.exe
-          filename: "${{ env.targetZip }}"
+          filename: "${{ env.targetWin64Zip }}"
+
+      - name: Archive Release (webassembly)
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          directory: build-webassembly
+          filename: "${{ env.targetWebAssemblyZip }}"
           
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "${{ env.targetZip }}"
+          artifacts: "${{ env.targetWin64Zip }},${{ env.targetWebAssemblyZip }}"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}

@@ -6,7 +6,7 @@ A tool to extract `midi` data from `caf` file. An attempt inspired by [Caf Midi 
 Just drag a `.caf` file to this `caf-to-midi.exe`
 
 ### TODOs
-- [ ] emscripten build for web use
+- [*] WebAssembly build for web use
 
 ### Reference
 - [pascoej/caf: Apple Core Audio Format Container Encoder/Decoder for Go](https://github.com/pascoej/caf)

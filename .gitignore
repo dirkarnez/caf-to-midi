@@ -1,3 +1,5 @@
 *.caf
 *.midi
 *.exe
+*.wasm
+wasm_exec.js
