@@ -52,6 +52,14 @@ jobs:
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "${{ env.targetWin64Zip }},${{ env.targetWebAssemblyZip }}"
+          artifacts: "${{ env.targetWin64Zip }}"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release prebuilt
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "${{ env.targetWebAssemblyZip }}"
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
