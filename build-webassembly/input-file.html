@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.4.0"></script>
+</head>
+
+<body>    
+  <script src="wasm_exec.js"></script>
+  <input type="file" id="input">
+  <script>
+    function convert(cafData) {
+      const go = new Go();
+      return WebAssembly
+      .instantiateStreaming(fetch("main.wasm"), go.importObject)
+      .then(result => {
+          go.run(result.instance);
+
+          var midiData = convertCafToMidiGo(cafData);
+          if (!midiData || midiData.length == 0) {
+              throw "Fail to convert this file";
+          }
+
+          return URL.createObjectURL(new Blob([midiData]));
+      });
+    }
+
+    function download(url, filename) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    const inputElement = document.getElementById("input");
+    inputElement.addEventListener("change", function () {
+      const fileList = this.files;
+      const file = fileList[0];
+
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        convert(new Uint8Array(event.target.result))
+        .then(converted => download(converted, file.name.substr(0, file.name.lastIndexOf(".")) + ".mid"))
+        .catch(err => alert(err));
+      }
+
+      reader.readAsArrayBuffer(file)
+    }, false);
+
+  </script>
+</body>
+
+</html>
