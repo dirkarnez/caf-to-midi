@@ -11,12 +11,11 @@
     <script src="wasm_exec.js"></script>
     
     <script>
-        const go = new Go();
-        
-        fetch("Dance Floor Pattern 07.caf")
+        fetch("Dance Floor Pattern 01.caf")
         .then(resp => resp.arrayBuffer())
         .then(cafData => {
             const go = new Go();
+            
             WebAssembly
             .instantiateStreaming(fetch("main.wasm"), go.importObject)
             .then(result => {
