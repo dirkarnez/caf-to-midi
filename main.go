@@ -16,7 +16,7 @@ func GetFileName(path string) string {
 }
 
 func convertCafToMidi_Desktop(filePath string) {
-	contents, err := ioutil.ReadFile(filePath)
+	contents, err := os.ReadFile(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
